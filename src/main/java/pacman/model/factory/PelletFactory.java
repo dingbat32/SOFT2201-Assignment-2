@@ -11,10 +11,10 @@ import pacman.model.entity.staticentity.collectable.Pellet;
 public class PelletFactory implements RenderableFactory {
 
     @Override
-    public Renderable createRenderable(Vector2D position) {
+    public Renderable createRenderable(int x, int y) {
         ImageLoader imageLoader = ImageLoader.getInstance();
         Image image = imageLoader.loadImage("pellet.png");
-        BoundingBox boundingBox = new BoundingBoxImpl(position, image.getHeight(), image.getWidth());
+        BoundingBox boundingBox = new BoundingBoxImpl(new Vector2D(x*16,y*16), image.getHeight(), image.getWidth());
         return new Pellet(boundingBox, Renderable.Layer.FOREGROUND, image, 100);
     }
 }

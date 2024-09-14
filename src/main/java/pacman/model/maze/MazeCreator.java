@@ -26,7 +26,8 @@ public class MazeCreator {
 
     public Maze createMaze(){
         File f = new File(this.fileName);
-        Maze maze = new Maze();
+        Maze maze =  Maze.getInstance();
+        maze.reset();
 
         try {
             Scanner scanner = new Scanner(f);
@@ -52,12 +53,10 @@ public class MazeCreator {
         catch (FileNotFoundException e) {
             System.out.println("No maze file was found.");
             exit(0);
+        } catch (Exception e){
+            System.out.println("Error");
+            exit(0);
         }
-//        } catch (Exception e){
-//            System.out.println("Error");
-//            System.out.println(e.getMessage());
-//            exit(0);
-//        }
 
         return maze;
     }

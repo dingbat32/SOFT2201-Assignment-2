@@ -14,7 +14,7 @@ public class WallFactory implements RenderableFactory {
         this.wallType = type;
     }
     @Override
-    public Renderable createRenderable(Vector2D position) {
+    public Renderable createRenderable(int x, int y) {
         ImageLoader imageLoader = ImageLoader.getInstance();
         Image image;
         switch (wallType) {
@@ -39,7 +39,7 @@ public class WallFactory implements RenderableFactory {
             default:
                 throw new IllegalArgumentException("Invalid wall type");
         }
-        BoundingBox boundingBox = new BoundingBoxImpl(position, image.getHeight(), image.getWidth());
+        BoundingBox boundingBox = new BoundingBoxImpl(new Vector2D(x*16,y*16), image.getHeight(), image.getWidth());
         return new StaticEntityImpl(boundingBox, Renderable.Layer.FOREGROUND, image);
     }
 }

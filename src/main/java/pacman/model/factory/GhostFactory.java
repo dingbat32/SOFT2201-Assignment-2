@@ -13,12 +13,12 @@ import java.util.Random;
 public class GhostFactory  implements RenderableFactory {
 
     @Override
-    public Renderable createRenderable(Vector2D position) {
+    public Renderable createRenderable(int x, int y) {
         ImageLoader imageLoader = ImageLoader.getInstance();
         Image ghostImage = imageLoader.loadImage("ghosts/ghost.png");
-        BoundingBox ghostBox = new BoundingBoxImpl(position, ghostImage.getHeight(), ghostImage.getWidth());
+        BoundingBox ghostBox = new BoundingBoxImpl(new Vector2D(x*16+4,y*16-4), ghostImage.getHeight(), ghostImage.getWidth());
         KinematicStateImpl state = new KinematicStateImpl.KinematicStateBuilder()
-                .setPosition(position)
+                .setPosition(new Vector2D(x*16+4,y*16-4))
                 .build();
         List<Vector2D> corners = List.of(
                 new Vector2D(0, 0),

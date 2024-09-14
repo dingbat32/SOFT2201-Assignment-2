@@ -20,11 +20,20 @@ public class Maze {
     private final Map<String, Boolean> isWall;
     private int numLives;
 
-    public Maze() {
+    private static Maze uniqueInstance;
+
+    private Maze() {
         this.renderables = new ArrayList<>();
         this.ghosts = new ArrayList<>();
         this.pellets = new ArrayList<>();
         this.isWall = new HashMap<>();
+    }
+
+    public static Maze getInstance() {
+        if (uniqueInstance == null) {
+            uniqueInstance = new Maze();
+        }
+        return uniqueInstance;
     }
 
     /**

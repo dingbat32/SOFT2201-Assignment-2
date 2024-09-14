@@ -13,7 +13,7 @@ import java.util.Map;
 public class PacManFactory implements RenderableFactory {
 
     @Override
-    public Renderable createRenderable(Vector2D position) {
+    public Renderable createRenderable(int x, int y) {
         ImageLoader imageLoader = ImageLoader.getInstance();
         Map<PacmanVisual, Image> pacmanVisualImages = new HashMap<>();
         pacmanVisualImages.put(PacmanVisual.CLOSED, imageLoader.loadImage("pacman/playerClosed.png"));
@@ -22,9 +22,9 @@ public class PacManFactory implements RenderableFactory {
         pacmanVisualImages.put(PacmanVisual.RIGHT, imageLoader.loadImage("pacman/playerRight.png"));
         pacmanVisualImages.put(PacmanVisual.UP, imageLoader.loadImage("pacman/playerUp.png"));
         Image closedImage = pacmanVisualImages.get(PacmanVisual.CLOSED);
-        BoundingBox pacmanBox = new BoundingBoxImpl(position, closedImage.getHeight(), closedImage.getWidth());
+        BoundingBox pacmanBox = new BoundingBoxImpl(new Vector2D(x*16+4,y*16-4), closedImage.getHeight(), closedImage.getWidth());
         KinematicStateImpl state = new KinematicStateImpl.KinematicStateBuilder()
-                .setPosition(position)
+                .setPosition(new Vector2D(x*16+4,y*16-4))
                 .build();
         return new Pacman(closedImage, pacmanVisualImages, pacmanBox, state);
     }

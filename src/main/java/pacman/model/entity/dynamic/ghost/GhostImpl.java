@@ -62,7 +62,6 @@ public class GhostImpl implements Ghost {
         }
 
         this.currentDirection = selectDirection(possibleDirections);
-
         switch (currentDirection) {
             case LEFT -> this.kinematicState.left();
             case RIGHT -> this.kinematicState.right();
@@ -74,7 +73,7 @@ public class GhostImpl implements Ghost {
     private Vector2D getTargetLocation() {
         return switch (this.ghostMode) {
             // how does Ghost get the Player's position ??
-            case CHASE -> this.playerPosition;
+            case CHASE -> Maze.getInstance().getControllable().getPosition();
             case SCATTER -> this.targetCorner;
         };
     }

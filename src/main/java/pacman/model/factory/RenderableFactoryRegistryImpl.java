@@ -29,12 +29,11 @@ public class RenderableFactoryRegistryImpl implements RenderableFactoryRegistry 
 
     @Override
     public Renderable createRenderable(char tileType, int x, int y) {
-        Vector2D position = new Vector2D(x*16, y*16);
         if (!factoryRegistry.containsKey(tileType)) {
             throw new IllegalStateException("No factory registered for key " + tileType);
         }
 
         RenderableFactory factory = factoryRegistry.get(tileType);
-        return factory.createRenderable(position);
+        return factory.createRenderable(x, y);
     }
 }
