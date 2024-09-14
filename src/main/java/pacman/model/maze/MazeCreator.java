@@ -1,5 +1,10 @@
 package pacman.model.maze;
 
+import pacman.model.entity.Renderable;
+import pacman.model.entity.dynamic.physics.Vector2D;
+import pacman.model.factory.RenderableFactoryRegistry;
+import pacman.model.factory.RenderableFactoryRegistryImpl;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -13,9 +18,10 @@ public class MazeCreator {
 
     private final String fileName;
     public static final int RESIZING_FACTOR = 16;
-
+    RenderableFactoryRegistry factoryRegistry;
     public MazeCreator(String fileName){
         this.fileName = fileName;
+        factoryRegistry = new RenderableFactoryRegistryImpl();
     }
 
     public Maze createMaze(){
@@ -33,24 +39,25 @@ public class MazeCreator {
                 char[] row = line.toCharArray();
 
                 for (int x = 0; x < row.length; x++){
-                    /**
-                     * TO DO: Implement Factory Method Pattern
-                     */
-
+                    if (row[x] != '0'){
+                        Renderable renderable = factoryRegistry.createRenderable(row[x], x, y);
+                        maze.addRenderable(renderable, row[x], x, y);
+                    }
                 }
-
                 y += 1;
             }
 
             scanner.close();
         }
-        catch (FileNotFoundException e){
+        catch (FileNotFoundException e) {
             System.out.println("No maze file was found.");
             exit(0);
-        } catch (Exception e){
-            System.out.println("Error");
-            exit(0);
         }
+//        } catch (Exception e){
+//            System.out.println("Error");
+//            System.out.println(e.getMessage());
+//            exit(0);
+//        }
 
         return maze;
     }

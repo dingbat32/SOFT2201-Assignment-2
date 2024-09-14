@@ -2,6 +2,7 @@ package pacman.model.factory;
 
 import pacman.model.entity.Renderable;
 import pacman.model.entity.dynamic.physics.Vector2D;
+import pacman.model.maze.RenderableType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,9 +13,9 @@ public class RenderableFactoryRegistryImpl implements RenderableFactoryRegistry 
         for (int wallType = 1 ; wallType <= 6 ; wallType++) {
             registerFactory(Character.forDigit(wallType, 10), new WallFactory(wallType));
         }
-        registerFactory('7', new PelletFactory());
-        registerFactory('g', new GhostFactory());
-        registerFactory('p', new PacManFactory());
+        registerFactory(RenderableType.PELLET, new PelletFactory());
+        registerFactory(RenderableType.GHOST, new GhostFactory());
+        registerFactory(RenderableType.PACMAN, new PacManFactory());
     }
 
     private void registerFactory(char key, RenderableFactory factory) {
@@ -27,10 +28,10 @@ public class RenderableFactoryRegistryImpl implements RenderableFactoryRegistry 
     }
 
     @Override
-    public Renderable createRenderable(char tileType, Vector2D position) {
-
+    public Renderable createRenderable(char tileType, int x, int y) {
+        Vector2D position = new Vector2D(x*16, y*16);
         if (!factoryRegistry.containsKey(tileType)) {
-            throw new IllegalStateException("No factory registered for specification.");
+            throw new IllegalStateException("No factory registered for key " + tileType);
         }
 
         RenderableFactory factory = factoryRegistry.get(tileType);

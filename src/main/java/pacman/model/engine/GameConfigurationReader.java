@@ -16,7 +16,7 @@ public class GameConfigurationReader {
 
     private JSONObject gameConfig;
 
-    public GameConfigurationReader(String configPath){
+    public GameConfigurationReader(String configPath) {
         JSONParser parser = new JSONParser();
 
         try {

@@ -31,10 +31,10 @@ public class WallFactory implements RenderableFactory {
                 image = imageLoader.loadImage("walls/upRight.png");
                 break;
             case 5:
-                image = imageLoader.loadImage("walls/downRight.png");
+                image = imageLoader.loadImage("walls/downLeft.png");
                 break;
             case 6:
-                image = imageLoader.loadImage("walls/downLeft.png");
+                image = imageLoader.loadImage("walls/downRight.png");
                 break;
             default:
                 throw new IllegalArgumentException("Invalid wall type");
