@@ -6,6 +6,7 @@ import pacman.model.entity.Renderable;
 import pacman.model.entity.dynamic.physics.*;
 import pacman.model.entity.dynamic.player.Pacman;
 import pacman.model.entity.dynamic.player.PacmanVisual;
+import pacman.model.maze.MazeCreator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,9 +23,10 @@ public class PacManFactory implements RenderableFactory {
         pacmanVisualImages.put(PacmanVisual.RIGHT, imageLoader.loadImage("pacman/playerRight.png"));
         pacmanVisualImages.put(PacmanVisual.UP, imageLoader.loadImage("pacman/playerUp.png"));
         Image closedImage = pacmanVisualImages.get(PacmanVisual.CLOSED);
-        BoundingBox pacmanBox = new BoundingBoxImpl(new Vector2D(x*16+4,y*16-4), closedImage.getHeight(), closedImage.getWidth());
+        Vector2D position = new Vector2D(x*MazeCreator.RESIZING_FACTOR+4,y*MazeCreator.RESIZING_FACTOR-4);
+        BoundingBox pacmanBox = new BoundingBoxImpl(position, closedImage.getHeight(), closedImage.getWidth());
         KinematicStateImpl state = new KinematicStateImpl.KinematicStateBuilder()
-                .setPosition(new Vector2D(x*16+4,y*16-4))
+                .setPosition(position)
                 .build();
         return new Pacman(closedImage, pacmanVisualImages, pacmanBox, state);
     }
