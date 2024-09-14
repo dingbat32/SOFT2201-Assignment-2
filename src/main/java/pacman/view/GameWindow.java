@@ -34,7 +34,6 @@ public class GameWindow {
 
         pane = new Pane();
         scene = new Scene(pane, width, height);
-
         entityViews = new ArrayList<>();
 
         KeyboardInputHandler keyboardInputHandler = new KeyboardInputHandler();
