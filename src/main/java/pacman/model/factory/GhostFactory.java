@@ -20,7 +20,11 @@ public class GhostFactory  implements RenderableFactory {
         KinematicStateImpl state = new KinematicStateImpl.KinematicStateBuilder()
                 .setPosition(position)
                 .build();
-        List<Vector2D> corners = List.of(new Vector2D(0, 0), new Vector2D(0, 576), new Vector2D(448, 0), new Vector2D(448, 576));
+        List<Vector2D> corners = List.of(
+                new Vector2D(0, 0),
+                new Vector2D(0, 576),
+                new Vector2D(448, 0),
+                new Vector2D(448, 576));
         Random random = new Random();
         Vector2D targetCorner = corners.get(random.nextInt(4));
         return new GhostImpl(ghostImage, ghostBox, state, GhostMode.SCATTER, targetCorner, Direction.UP);
