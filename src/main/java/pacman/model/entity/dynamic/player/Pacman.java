@@ -38,6 +38,7 @@ public class Pacman implements Controllable {
     @Override
     public void setPosition(Vector2D position) {
         this.kinematicState.setPosition(position);
+        this.boundingBox.setTopLeft(this.kinematicState.getPosition());
     }
 
     @Override

@@ -137,6 +137,7 @@ public class GhostImpl implements Ghost {
     @Override
     public void setPosition(Vector2D position) {
         this.kinematicState.setPosition(position);
+        this.boundingBox.setTopLeft(this.kinematicState.getPosition());
     }
 
     @Override
