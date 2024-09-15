@@ -5,6 +5,7 @@ import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
+import pacman.model.command.CommandInvoker;
 import pacman.model.engine.GameEngine;
 import pacman.model.entity.Renderable;
 import pacman.view.background.BackgroundDrawer;
@@ -35,8 +36,7 @@ public class GameWindow {
         pane = new Pane();
         scene = new Scene(pane, width, height);
         entityViews = new ArrayList<>();
-
-        KeyboardInputHandler keyboardInputHandler = new KeyboardInputHandler();
+        KeyboardInputHandler keyboardInputHandler = new KeyboardInputHandler(CommandInvoker.getInstance());
         scene.setOnKeyPressed(keyboardInputHandler::handlePressed);
 
         BackgroundDrawer backgroundDrawer = new StandardBackgroundDrawer();

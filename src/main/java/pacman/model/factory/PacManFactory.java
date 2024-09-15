@@ -3,7 +3,6 @@ package pacman.model.factory;
 import javafx.scene.image.Image;
 import pacman.model.engine.ImageLoader;
 import pacman.model.entity.Renderable;
-import pacman.model.entity.dynamic.DynamicEntity;
 import pacman.model.entity.dynamic.physics.*;
 import pacman.model.entity.dynamic.player.Pacman;
 import pacman.model.entity.dynamic.player.PacmanVisual;
@@ -25,8 +24,8 @@ public class PacManFactory implements RenderableFactory {
         pacmanVisualImages.put(PacmanVisual.UP, imageLoader.loadImage("pacman/playerUp.png"));
         Image closedImage = pacmanVisualImages.get(PacmanVisual.CLOSED);
         Vector2D position = new Vector2D(
-                x * MazeCreator.RESIZING_FACTOR + DynamicEntity.START_OFFSET_X,
-                y * MazeCreator.RESIZING_FACTOR + DynamicEntity.START_OFFSET_Y);
+                x * MazeCreator.RESIZING_FACTOR + Pacman.START_OFFSET_X,
+                y * MazeCreator.RESIZING_FACTOR + Pacman.START_OFFSET_Y);
         BoundingBox pacmanBox = new BoundingBoxImpl(position, closedImage.getHeight(), closedImage.getWidth());
         KinematicStateImpl state = new KinematicStateImpl.KinematicStateBuilder()
                 .setPosition(position)

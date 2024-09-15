@@ -25,6 +25,7 @@ public class GhostImpl implements Ghost {
     private Set<Direction> possibleDirections;
     private Vector2D playerPosition;
     private Map<GhostMode, Double> speeds;
+    private boolean alreadyTurned;
 
     public GhostImpl(Image image, BoundingBox boundingBox, KinematicState kinematicState, GhostMode ghostMode, Vector2D targetCorner, Direction currentDirection) {
         this.image = image;
@@ -82,6 +83,17 @@ public class GhostImpl implements Ghost {
         if (possibleDirections.isEmpty()) {
             return currentDirection;
         }
+        Set<Direction> difference = new HashSet<>(possibleDirections);
+
+        //make sure we are not at an intersection to reset turn possibility
+        difference.removeAll(Arrays.asList(currentDirection, currentDirection.opposite()));
+        if (difference.isEmpty()) {
+            alreadyTurned = false;
+        }
+
+        if (alreadyTurned) {
+            return currentDirection;
+        }
 
         Map<Direction, Double> distances = new HashMap<>();
 
@@ -91,9 +103,13 @@ public class GhostImpl implements Ghost {
                 distances.put(direction, Vector2D.calculateEuclideanDistance(this.kinematicState.getPotentialPosition(direction), this.targetLocation));
             }
         }
-
         // select the direction that will reach the target location fastest
-        return Collections.min(distances.entrySet(), Map.Entry.comparingByValue()).getKey();
+        Direction newDirection = Collections.min(distances.entrySet(), Map.Entry.comparingByValue()).getKey();
+        //make sure we don't turn twice
+        if (newDirection != currentDirection) {
+            alreadyTurned = true;
+        }
+        return newDirection;
     }
 
     @Override

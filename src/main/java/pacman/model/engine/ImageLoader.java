@@ -6,7 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class ImageLoader {
-    private String path;
+    private final String path;
     private static ImageLoader uniqueInstance;
     private ImageLoader(String path) {
         this.path = path;

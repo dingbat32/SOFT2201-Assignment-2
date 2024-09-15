@@ -2,6 +2,7 @@ package pacman.view.keyboard;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import pacman.model.command.*;
 import pacman.model.entity.Renderable;
 import pacman.model.entity.dynamic.player.Controllable;
 import pacman.model.entity.dynamic.player.Pacman;
@@ -12,30 +13,31 @@ import pacman.model.maze.Maze;
  */
 public class KeyboardInputHandler {
     Controllable controllable;
-
-    public KeyboardInputHandler() {
+    CommandInvoker commandInvoker;
+    public KeyboardInputHandler(CommandInvoker commandInvoker) {
         Renderable givenControllable = Maze.getInstance().getControllable();
         if (givenControllable instanceof Controllable) {
             controllable = (Controllable) givenControllable;
         } else {
             throw new RuntimeException("getControllable() did not get controllable");
         }
+        this.commandInvoker = commandInvoker;
     }
 
     public void handlePressed(KeyEvent keyEvent) {
         KeyCode keyCode = keyEvent.getCode();
         switch (keyCode) {
             case LEFT:
-                controllable.left();
+                commandInvoker.addCommand(new LeftCommand(controllable));
                 break;
             case RIGHT:
-                controllable.right();
+                commandInvoker.addCommand(new RightCommand(controllable));
                 break;
             case DOWN:
-                controllable.down();
+                commandInvoker.addCommand(new DownCommand(controllable));
                 break;
             case UP:
-                controllable.up();
+                commandInvoker.addCommand(new UpCommand(controllable));
                 break;
         }
     }

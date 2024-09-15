@@ -1,6 +1,7 @@
 package pacman.model.entity.dynamic.player;
 
 import javafx.scene.image.Image;
+import pacman.model.command.CommandInvoker;
 import pacman.model.entity.Renderable;
 import pacman.model.entity.dynamic.physics.*;
 import pacman.model.entity.staticentity.collectable.Collectable;
@@ -11,6 +12,8 @@ import java.util.*;
 public class Pacman implements Controllable {
 
     public static final int PACMAN_IMAGE_SWAP_TICK_COUNT = 8;
+    public static final int START_OFFSET_X = 4;
+    public static final int START_OFFSET_Y = -5;
     private final Layer layer = Layer.FOREGROUND;
     private final Map<PacmanVisual, Image> images;
     private final BoundingBox boundingBox;
@@ -19,6 +22,7 @@ public class Pacman implements Controllable {
     private Image currentImage;
     private Set<Direction> possibleDirections;
     private boolean isClosedImage;
+
 
     public Pacman(
             Image currentImage,
@@ -61,6 +65,7 @@ public class Pacman implements Controllable {
     }
 
     public void update() {
+        CommandInvoker.getInstance().update();
         kinematicState.update();
         this.boundingBox.setTopLeft(this.kinematicState.getPosition());
     }
@@ -92,6 +97,11 @@ public class Pacman implements Controllable {
     public void right() {
         this.kinematicState.right();
         this.currentImage = images.get(PacmanVisual.RIGHT);
+    }
+    @Override
+    public boolean canGo(Direction direction) {
+        System.out.println(possibleDirections);
+        return this.possibleDirections.contains(direction);
     }
 
     @Override
