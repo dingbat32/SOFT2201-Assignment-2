@@ -11,6 +11,8 @@ import java.util.Set;
  * Represents a dynamic entity in the Pac-Man Game
  */
 public interface DynamicEntity extends Renderable {
+    int START_OFFSET_X = 4;
+    int START_OFFSET_Y = -6;
 
     /**
      * Updates the position of the Dynamic Entity

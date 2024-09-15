@@ -3,6 +3,7 @@ package pacman.model.factory;
 import javafx.scene.image.Image;
 import pacman.model.engine.ImageLoader;
 import pacman.model.entity.Renderable;
+import pacman.model.entity.dynamic.DynamicEntity;
 import pacman.model.entity.dynamic.ghost.GhostImpl;
 import pacman.model.entity.dynamic.ghost.GhostMode;
 import pacman.model.entity.dynamic.physics.*;
@@ -16,7 +17,9 @@ public class GhostFactory  implements RenderableFactory {
     @Override
     public Renderable createRenderable(int x, int y) {
         ImageLoader imageLoader = ImageLoader.getInstance();
-        Vector2D position = new Vector2D(x*MazeCreator.RESIZING_FACTOR+4,y*MazeCreator.RESIZING_FACTOR-6);
+        Vector2D position = new Vector2D(
+                x * MazeCreator.RESIZING_FACTOR + DynamicEntity.START_OFFSET_X,
+                y * MazeCreator.RESIZING_FACTOR + DynamicEntity.START_OFFSET_Y);
         Image ghostImage = imageLoader.loadImage("ghosts/ghost.png");
         BoundingBox ghostBox = new BoundingBoxImpl(position, ghostImage.getHeight(), ghostImage.getWidth());
         KinematicStateImpl state = new KinematicStateImpl.KinematicStateBuilder()
