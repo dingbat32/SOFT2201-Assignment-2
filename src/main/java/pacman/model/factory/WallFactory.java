@@ -7,6 +7,7 @@ import pacman.model.entity.dynamic.physics.BoundingBox;
 import pacman.model.entity.dynamic.physics.BoundingBoxImpl;
 import pacman.model.entity.dynamic.physics.Vector2D;
 import pacman.model.entity.staticentity.StaticEntityImpl;
+import pacman.model.maze.MazeCreator;
 
 public class WallFactory implements RenderableFactory {
     private int wallType;
@@ -16,30 +17,16 @@ public class WallFactory implements RenderableFactory {
     @Override
     public Renderable createRenderable(int x, int y) {
         ImageLoader imageLoader = ImageLoader.getInstance();
-        Image image;
-        switch (wallType) {
-            case 1:
-                image = imageLoader.loadImage("walls/horizontal.png");
-                break;
-            case 2:
-                image = imageLoader.loadImage("walls/vertical.png");
-                break;
-            case 3:
-                image = imageLoader.loadImage("walls/upLeft.png");
-                break;
-            case 4:
-                image = imageLoader.loadImage("walls/upRight.png");
-                break;
-            case 5:
-                image = imageLoader.loadImage("walls/downLeft.png");
-                break;
-            case 6:
-                image = imageLoader.loadImage("walls/downRight.png");
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid wall type");
-        }
-        BoundingBox boundingBox = new BoundingBoxImpl(new Vector2D(x*16,y*16), image.getHeight(), image.getWidth());
+        Image image = switch (wallType) {
+            case 1 -> imageLoader.loadImage("walls/horizontal.png");
+            case 2 -> imageLoader.loadImage("walls/vertical.png");
+            case 3 -> imageLoader.loadImage("walls/upLeft.png");
+            case 4 -> imageLoader.loadImage("walls/upRight.png");
+            case 5 -> imageLoader.loadImage("walls/downLeft.png");
+            case 6 -> imageLoader.loadImage("walls/downRight.png");
+            default -> throw new IllegalArgumentException("Invalid wall type");
+        };
+        BoundingBox boundingBox = new BoundingBoxImpl(new Vector2D(x*MazeCreator.RESIZING_FACTOR,y*MazeCreator.RESIZING_FACTOR), image.getHeight(), image.getWidth());
         return new StaticEntityImpl(boundingBox, Renderable.Layer.FOREGROUND, image);
     }
 }
