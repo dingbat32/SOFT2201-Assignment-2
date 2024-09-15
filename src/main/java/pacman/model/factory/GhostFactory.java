@@ -16,7 +16,7 @@ public class GhostFactory  implements RenderableFactory {
     @Override
     public Renderable createRenderable(int x, int y) {
         ImageLoader imageLoader = ImageLoader.getInstance();
-        Vector2D position = new Vector2D(x*MazeCreator.RESIZING_FACTOR+4,y*MazeCreator.RESIZING_FACTOR-4);
+        Vector2D position = new Vector2D(x*MazeCreator.RESIZING_FACTOR+4,y*MazeCreator.RESIZING_FACTOR-6);
         Image ghostImage = imageLoader.loadImage("ghosts/ghost.png");
         BoundingBox ghostBox = new BoundingBoxImpl(position, ghostImage.getHeight(), ghostImage.getWidth());
         KinematicStateImpl state = new KinematicStateImpl.KinematicStateBuilder()

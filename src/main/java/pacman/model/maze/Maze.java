@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class Maze {
 
-    private static final int MAX_CENTER_DISTANCE = 4;
+    private static final int MAX_CENTER_DISTANCE = 1;
     private final List<Renderable> renderables;
     private Renderable pacman;
     private final List<Renderable> ghosts;
