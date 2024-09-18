@@ -75,8 +75,6 @@ public class LevelImpl implements Level {
 
         // Set up collectables
         this.collectables = new ArrayList<>(maze.getPellets());
-
-
     }
 
     @Override
@@ -192,12 +190,13 @@ public class LevelImpl implements Level {
 
     @Override
     public void handleGameEnd() {
-        scores.notifyObservers();
+        //scores.notifyObservers();
     }
 
     @Override
     public void collect(Collectable collectable) {
         collectables.remove(collectable);
+        scores.addScore(collectable.getPoints());
     }
 
 }

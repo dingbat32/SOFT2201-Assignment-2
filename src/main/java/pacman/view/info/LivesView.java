@@ -12,6 +12,7 @@ import pacman.model.entity.dynamic.physics.BoundingBoxImpl;
 import pacman.model.entity.dynamic.physics.Vector2D;
 import pacman.model.entity.staticentity.scoreboard.Life;
 import pacman.model.maze.MazeCreator;
+import pacman.view.entity.EntityView;
 import pacman.view.entity.EntityViewImpl;
 
 import java.util.ArrayList;
@@ -22,11 +23,17 @@ public class LivesView implements Observer, Display {
     public final int LIVES_HEIGHT_OFFSET = 550;
     private List<Life> lives;
     private final ScoreKeeper scoreKeeper;
+    private final List<EntityView> entityViews;
     public LivesView() {
         this.scoreKeeper = ScoreKeeper.getInstance();
         lives = new ArrayList<>();
         for (int i = 0; i < scoreKeeper.getStartingLives(); i++) {
             lives.add(createLife(i));
+        }
+        entityViews = new ArrayList<>();
+        for (Life life : lives) {
+            EntityView entityView = new EntityViewImpl(life);
+            entityViews.add(entityView);
         }
     }
     @Override
@@ -40,13 +47,16 @@ public class LivesView implements Observer, Display {
                 lives.get(i).hide();
             }
         }
+        entityViews.forEach(EntityView::update);
     }
 
     @Override
-    public List<Renderable> display() {
-        return lives.stream()
-                .map(element -> (Renderable) element)
-                .collect(Collectors.toList());
+    public List<Node> getNodes() {
+        List<Node> nodes = new ArrayList<>();
+        for (EntityView entityView : entityViews) {
+            nodes.add(entityView.getNode());
+        }
+        return nodes;
     }
 
     private Life createLife(int i) {

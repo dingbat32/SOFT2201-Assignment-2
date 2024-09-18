@@ -4,18 +4,21 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
+import pacman.model.ScoreKeeper;
 import pacman.model.command.CommandInvoker;
 import pacman.model.engine.GameEngine;
 import pacman.model.entity.Renderable;
 import pacman.model.factory.DisplayFactory;
 import pacman.model.factory.DisplayFactoryImpl;
-import pacman.model.factory.RenderableFactory;
 import pacman.view.background.BackgroundDrawer;
 import pacman.view.background.StandardBackgroundDrawer;
 import pacman.view.entity.EntityView;
 import pacman.view.entity.EntityViewImpl;
 import pacman.view.info.Display;
+import pacman.view.info.Observer;
 import pacman.view.keyboard.KeyboardInputHandler;
 
 import java.io.File;
@@ -33,7 +36,7 @@ public class GameWindow {
     private final Pane pane;
     private final GameEngine model;
     private final List<EntityView> entityViews;
-
+    private final List<Display> displays;
     public GameWindow(GameEngine model, int width, int height) {
         this.model = model;
 
@@ -47,7 +50,16 @@ public class GameWindow {
         backgroundDrawer.draw(model, pane);
 
         DisplayFactory displayFactory = new DisplayFactoryImpl();
-
+        displays = displayFactory.createDisplays();
+        ScoreKeeper scoreKeeper = ScoreKeeper.getInstance();
+        for (Display display : displays) {
+            if (display instanceof Observer) {
+                scoreKeeper.registerObserver((Observer) display);
+            }
+        }
+        for (Display display : displays) {
+            pane.getChildren().addAll(display.getNodes());
+        }
     }
 
     public Scene getScene() {
@@ -60,11 +72,11 @@ public class GameWindow {
 
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-
         model.startGame();
     }
 
     private void draw() {
+
         model.tick();
 
         List<Renderable> entities = model.getRenderables();

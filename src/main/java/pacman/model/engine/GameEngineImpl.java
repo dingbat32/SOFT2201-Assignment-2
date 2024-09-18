@@ -53,25 +53,11 @@ public class GameEngineImpl implements GameEngine {
         this.scoreKeeper = ScoreKeeper.getInstance();
         scoreKeeper.init(gameConfigurationReader.getNumLives());
         DisplayFactory factory = new DisplayFactoryImpl();
-        displays = factory.createDisplays();
-        for (Display display : displays) {
-            if (display instanceof Observer) {
-                scoreKeeper.registerObserver((Observer) display);
-            }
-        }
-
-    }
-
-    public void addObserver(Observer observer) {
-
     }
 
     @Override
     public List<Renderable> getRenderables() {
         List<Renderable> renderables = new ArrayList<>(this.currentLevel.getRenderables());
-        for (Display display : displays) {
-            renderables.addAll(display.display());
-        }
         return renderables;
     }
 

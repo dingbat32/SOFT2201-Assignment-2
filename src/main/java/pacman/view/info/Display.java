@@ -1,9 +1,9 @@
 package pacman.view.info;
 
-import pacman.model.entity.Renderable;
+import javafx.scene.Node;
 
 import java.util.List;
 
 public interface Display {
-    List<Renderable> display();
+    List<Node> getNodes();
 }

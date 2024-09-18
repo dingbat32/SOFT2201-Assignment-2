@@ -100,7 +100,6 @@ public class Pacman implements Controllable {
     }
     @Override
     public boolean canGo(Direction direction) {
-        System.out.println(possibleDirections);
         return this.possibleDirections.contains(direction);
     }
 
