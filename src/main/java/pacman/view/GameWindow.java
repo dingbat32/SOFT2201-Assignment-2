@@ -19,6 +19,7 @@ import pacman.view.entity.EntityView;
 import pacman.view.entity.EntityViewImpl;
 import pacman.view.info.Display;
 import pacman.view.info.Observer;
+import pacman.view.info.Pauseable;
 import pacman.view.keyboard.KeyboardInputHandler;
 
 import java.io.File;
@@ -76,8 +77,19 @@ public class GameWindow {
     }
 
     private void draw() {
+        boolean doLoop = true;
+        //don't do anything while game is paused
+        for (Display display : displays) {
+            if (display instanceof Pauseable pauseable) {
+                if (pauseable.isPaused()) {
+                    doLoop = false;
+                }
+            }
+        }
+        if (doLoop) {
+            model.tick();
+        }
 
-        model.tick();
 
         List<Renderable> entities = model.getRenderables();
 
