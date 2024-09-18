@@ -2,12 +2,21 @@ package pacman.model.engine;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import pacman.model.ScoreKeeper;
 import pacman.model.entity.Renderable;
+import pacman.model.factory.DisplayFactory;
+import pacman.model.factory.DisplayFactoryImpl;
 import pacman.model.level.Level;
 import pacman.model.level.LevelImpl;
 import pacman.model.maze.Maze;
 import pacman.model.maze.MazeCreator;
+import pacman.view.info.Display;
+import pacman.view.info.LivesView;
+import pacman.view.info.Observer;
+import pacman.view.info.ScoreView;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -16,11 +25,12 @@ import java.util.List;
 public class GameEngineImpl implements GameEngine {
 
     private Level currentLevel;
+    private ScoreKeeper scoreKeeper;
     private int numLevels;
     private final int currentLevelNo;
     private Maze maze;
     private JSONArray levelConfigs;
-
+    private List<Display> displays;
     public GameEngineImpl(String configPath) {
         this.currentLevelNo = 0;
 
@@ -40,11 +50,29 @@ public class GameEngineImpl implements GameEngine {
         if (levelConfigs.isEmpty()) {
             System.exit(0);
         }
+        this.scoreKeeper = ScoreKeeper.getInstance();
+        scoreKeeper.init(gameConfigurationReader.getNumLives());
+        DisplayFactory factory = new DisplayFactoryImpl();
+        displays = factory.createDisplays();
+        for (Display display : displays) {
+            if (display instanceof Observer) {
+                scoreKeeper.registerObserver((Observer) display);
+            }
+        }
+
+    }
+
+    public void addObserver(Observer observer) {
+
     }
 
     @Override
     public List<Renderable> getRenderables() {
-        return this.currentLevel.getRenderables();
+        List<Renderable> renderables = new ArrayList<>(this.currentLevel.getRenderables());
+        for (Display display : displays) {
+            renderables.addAll(display.display());
+        }
+        return renderables;
     }
 
     @Override

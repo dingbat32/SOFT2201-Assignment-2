@@ -8,10 +8,14 @@ import javafx.util.Duration;
 import pacman.model.command.CommandInvoker;
 import pacman.model.engine.GameEngine;
 import pacman.model.entity.Renderable;
+import pacman.model.factory.DisplayFactory;
+import pacman.model.factory.DisplayFactoryImpl;
+import pacman.model.factory.RenderableFactory;
 import pacman.view.background.BackgroundDrawer;
 import pacman.view.background.StandardBackgroundDrawer;
 import pacman.view.entity.EntityView;
 import pacman.view.entity.EntityViewImpl;
+import pacman.view.info.Display;
 import pacman.view.keyboard.KeyboardInputHandler;
 
 import java.io.File;
@@ -41,6 +45,9 @@ public class GameWindow {
 
         BackgroundDrawer backgroundDrawer = new StandardBackgroundDrawer();
         backgroundDrawer.draw(model, pane);
+
+        DisplayFactory displayFactory = new DisplayFactoryImpl();
+
     }
 
     public Scene getScene() {
@@ -87,7 +94,6 @@ public class GameWindow {
                 pane.getChildren().remove(entityView.getNode());
             }
         }
-
         entityViews.removeIf(EntityView::isMarkedForDelete);
     }
 }

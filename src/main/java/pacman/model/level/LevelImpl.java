@@ -2,6 +2,7 @@ package pacman.model.level;
 
 import org.json.simple.JSONObject;
 import pacman.ConfigurationParseException;
+import pacman.model.ScoreKeeper;
 import pacman.model.entity.Renderable;
 import pacman.model.entity.dynamic.DynamicEntity;
 import pacman.model.entity.dynamic.ghost.Ghost;
@@ -12,6 +13,8 @@ import pacman.model.entity.dynamic.player.Pacman;
 import pacman.model.entity.staticentity.StaticEntity;
 import pacman.model.entity.staticentity.collectable.Collectable;
 import pacman.model.maze.Maze;
+import pacman.view.info.LivesView;
+import pacman.view.info.ScoreView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,9 +34,10 @@ public class LevelImpl implements Level {
     private List<Ghost> ghosts;
     private int tickCount;
     private Map<GhostMode, Integer> modeLengths;
-    private int numLives;
+    private ScoreKeeper scores;
     private List<Renderable> collectables;
     private GhostMode currentGhostMode;
+    private ScoreKeeper keeper;
 
     public LevelImpl(JSONObject levelConfiguration,
                      Maze maze) {
@@ -42,7 +46,7 @@ public class LevelImpl implements Level {
         this.tickCount = 0;
         this.modeLengths = new HashMap<>();
         this.currentGhostMode = GhostMode.SCATTER;
-
+        scores = ScoreKeeper.getInstance();
         initLevel(new LevelConfigurationReader(levelConfiguration));
     }
 
@@ -56,7 +60,6 @@ public class LevelImpl implements Level {
         }
         this.player = (Controllable) maze.getControllable();
         this.player.setSpeed(levelConfigurationReader.getPlayerSpeed());
-        setNumLives(maze.getNumLives());
 
         // Set up ghosts
         this.ghosts = maze.getGhosts().stream()
@@ -73,11 +76,12 @@ public class LevelImpl implements Level {
         // Set up collectables
         this.collectables = new ArrayList<>(maze.getPellets());
 
+
     }
 
     @Override
     public List<Renderable> getRenderables() {
-        return this.renderables;
+        return renderables;
     }
 
     private List<DynamicEntity> getDynamicEntities() {
@@ -178,24 +182,22 @@ public class LevelImpl implements Level {
 
     @Override
     public int getNumLives() {
-        return this.numLives;
-    }
-
-    private void setNumLives(int numLives) {
-        this.numLives = numLives;
+        return  scores.getNumLives();
     }
 
     @Override
     public void handleLoseLife() {
+        scores.decreaseNumLives();
     }
 
     @Override
     public void handleGameEnd() {
-
+        scores.notifyObservers();
     }
 
     @Override
     public void collect(Collectable collectable) {
-
+        collectables.remove(collectable);
     }
+
 }
